@@ -6,8 +6,9 @@ use ntex::web::types::{Json, State};
 
 use crate::{errors::CustomError, models::article::Article, AppState};
 
-/// mod art per id
 /// #[web::put("/article")]
+
+/// mod art per id
 pub async fn edit_article(
     article: Json<Article>,
     state: State<Arc<AppState>>,
