@@ -1,6 +1,7 @@
 mod article;
 mod errors;
 mod models;
+mod user;
 
 use article::{delete, edit, new, search, view};
 
@@ -60,7 +61,8 @@ fn route(_state: Arc<AppState>, cfg: &mut web::ServiceConfig) {
             .route("/{id}", web::delete().to(delete::delete_article))
             .route("/search/{keyword}", web::get().to(search::search_article)),
     )
-    .service(web::scope("/articles").route("", web::get().to(view::get_articles_preview)));
+    .service(web::scope("/articles").route("", web::get().to(view::get_articles_preview)))
+    .service(web::scope("/user").route("/login", web::post().to(user::login::github_login)));
 }
 
 // #[web::get("/")]
