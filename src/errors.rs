@@ -39,9 +39,13 @@ impl WebResponseError for CustomError {
 impl fmt::Display for CustomError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            CustomError::NotFound(e) => write!(f, "{e}"),
+            Self::NotFound(e) => write!(f, "{e}"),
             Self::BadRequest(e) => write!(f, "{e}"),
-            CustomError::InternalServerErrror(e) => write!(f, "{e}"),
+            Self::AuthFailed(e) => write!(f,"{e}"),
+            Self::InternalServerErrror(e)=> write!(f, "{e}"),
+            // CustomError::NotFound(e) => write!(f, "{e}"),
+            // Self::BadRequest(e) => write!(f, "{e}"),
+            // CustomError::InternalServerErrror(e) => write!(f, "{e}"),
         }
     }
 }

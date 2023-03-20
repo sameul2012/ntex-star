@@ -1,9 +1,11 @@
 mod article;
 mod errors;
+mod middlewars;
 mod models;
 mod user;
 
 use article::{delete, edit, new, search, view};
+use user::login;
 
 use ntex::web::{self, middleware, App, HttpServer};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
@@ -62,7 +64,7 @@ fn route(_state: Arc<AppState>, cfg: &mut web::ServiceConfig) {
             .route("/search/{keyword}", web::get().to(search::search_article)),
     )
     .service(web::scope("/articles").route("", web::get().to(view::get_articles_preview)))
-    .service(web::scope("/user").route("/login", web::post().to(user::login::github_login)));
+    .service(web::scope("/user").route("/login", web::post().to(login::github_login)));
 }
 
 // #[web::get("/")]
