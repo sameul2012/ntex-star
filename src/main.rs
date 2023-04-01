@@ -1,6 +1,6 @@
 mod article;
 mod errors;
-mod middlewars;
+
 mod models;
 mod user;
 

@@ -50,7 +50,7 @@ pub async fn github_login(
             }
         },
         Err(_) => {
-            return Err(CustomError::InternalServerErrror(
+            return Err(CustomError::InternalServerError(
                 "can not get access_token, pls try again".into(),
             ));
         }
@@ -70,7 +70,7 @@ pub async fn github_login(
     let user_info = match user_info{
         Ok(r) => r.json::<GithubUserInfo>().await.unwrap(),
         Err(_) => {
-            return Err(CustomError::InternalServerErrror(
+            return Err(CustomError::InternalServerError(
                 "can not got github user info".into(),
             ));
         }

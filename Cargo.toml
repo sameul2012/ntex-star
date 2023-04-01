@@ -7,7 +7,9 @@ edition = "2021"
 
 [dependencies]
 chrono = { version = "0.4.23", features = ["serde"] }
-cookie = "0.16.0"
+cookie = "0.17"
+# enable cookie support
+# cookie = ["coo-kie", "coo-kie/percent-encode"]
 dotenvy = "0.15.6"
 env_logger = "0.10.0"
 ntex = { version = "0.6.0", features = ["cookie", "tokio"] }

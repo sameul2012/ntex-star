@@ -10,7 +10,7 @@ pub enum CustomError {
     NotFound(String),
     BadRequest(String),
     AuthFailed(String),
-    InternalServerErrror(String),
+    InternalServerError(String),
 }
 
 impl WebResponseError for CustomError {
@@ -19,7 +19,7 @@ impl WebResponseError for CustomError {
             Self::NotFound(_) => StatusCode::NOT_FOUND,
             Self::BadRequest(_) => StatusCode::BAD_REQUEST,
             Self::AuthFailed(_) => StatusCode::UNAUTHORIZED,
-            Self::InternalServerErrror(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            Self::InternalServerError(_) => StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 
@@ -29,7 +29,7 @@ impl WebResponseError for CustomError {
                 Self::NotFound(e) => e,
                 Self::BadRequest(e) => e,
                 Self::AuthFailed(e) => e,
-                Self::InternalServerErrror(e) => e,
+                Self::InternalServerError(e) => e,
             }
             .into(),
         )
@@ -42,10 +42,10 @@ impl fmt::Display for CustomError {
             Self::NotFound(e) => write!(f, "{e}"),
             Self::BadRequest(e) => write!(f, "{e}"),
             Self::AuthFailed(e) => write!(f,"{e}"),
-            Self::InternalServerErrror(e)=> write!(f, "{e}"),
+            Self::InternalServerError(e)=> write!(f, "{e}"),
             // CustomError::NotFound(e) => write!(f, "{e}"),
             // Self::BadRequest(e) => write!(f, "{e}"),
-            // CustomError::InternalServerErrror(e) => write!(f, "{e}"),
+            // CustomError::InternalServerError(e) => write!(f, "{e}"),
         }
     }
 }
@@ -54,7 +54,7 @@ impl From<sqlx::Error> for CustomError {
     fn from(e: sqlx::Error) -> Self {
         match e {
             sqlx::Error::RowNotFound => Self::NotFound("找不到对应的数据".into()),
-            _ => Self::InternalServerErrror("Internal Svr Err, contact aa@bb.com".into()),
+            _ => Self::InternalServerError("Internal Svr Err, contact aa@bb.com".into()),
         }
     }
 }
