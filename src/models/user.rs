@@ -47,16 +47,17 @@ pub struct Admin {
 }
 // imple the trait of FromRequest
 // extract user info from request, and verify user ID
-// 
+//
 
 impl<E: ErrorRenderer> FromRequest<E> for User {
     type Error = CustomError;
     type Future = Pin<Box<dyn Future<Output = Result<Self, Self::Error>>>>;
 
-    fn from_request(req: &ntex::web::HttpRequest, _: &mut ntex::http::Payload) ->
-    Self::Future {
+    fn from_request(req: &ntex::web::HttpRequest, _: &mut ntex::http::Payload) -> Self::Future {
         // attension: below 2 vars, cannot use referrence(req), otherwise, will have issue of life cycle
-        let db_pool = Arc::clone(req.app_state::<Arc<AppState>>().unwrap()).db_pool.clone();
+        let db_pool = Arc::clone(req.app_state::<Arc<AppState>>().unwrap())
+            .db_pool
+            .clone();
 
         let access_token = req.cookie("ACCESS_TOKEN");
 
@@ -69,28 +70,29 @@ impl<E: ErrorRenderer> FromRequest<E> for User {
             let user_id = match get_user_id(&access_token).await {
                 Ok(id) => id,
                 Err(e) => {
-                    return  Err(e);
+                    return Err(e);
                 }
             };
 
             if sqlx::query!("SELECT id FROM users WHERE id = $1", user_id)
-            .fetch_optional(&db_pool)
-            .await
-            .unwrap()
-            .is_none() {
+                .fetch_optional(&db_pool)
+                .await
+                .unwrap()
+                .is_none()
+            {
                 // there is no record, cur usr, did not log on our web site, use github
-                return Err(CustomError::AuthFailed("You did never log on our web using github".into()));
+                return Err(CustomError::AuthFailed(
+                    "You did never log on our web using github".into(),
+                ));
             }
-            Ok(Self {id: user_id})
+            Ok(Self { id: user_id })
         };
-        
-        Box::pin(fut)
 
+        Box::pin(fut)
     }
-    
 }
 
-impl <E:ErrorRenderer> FromRequest<E> for Admin {
+impl<E: ErrorRenderer> FromRequest<E> for Admin {
     type Error = CustomError;
     type Future = Pin<Box<dyn Future<Output = Result<Self, Self::Error>>>>;
 
@@ -110,7 +112,7 @@ impl <E:ErrorRenderer> FromRequest<E> for Admin {
             let user_id = match get_user_id(&access_token).await {
                 Ok(id) => id,
                 Err(e) => {
-                    return  Err(e);
+                    return Err(e);
                 }
             };
             if sqlx::query!("SELECT id FROM users WHERE id = $1", user_id)
@@ -120,23 +122,20 @@ impl <E:ErrorRenderer> FromRequest<E> for Admin {
             {
                 // GOT and NEED admin privilege
                 if user_id != 2322 {
-                    return Err(CustomError::AuthFailed("you are not admin, have no privilege to do so".into(),));
+                    return Err(CustomError::AuthFailed(
+                        "you are not admin, have no privilege to do so".into(),
+                    ));
                 }
-            }else {
-                // DID NOT GOT 
+            } else {
+                // DID NOT GOT
                 // CUR USR DID NOT LOG EVER
-                return Err(CustomError::AuthFailed("YOU DID NEVER LOG".into(),));
+                return Err(CustomError::AuthFailed("YOU DID NEVER LOG".into()));
             }
-            Ok(Self {id : user_id})
+            Ok(Self { id: user_id })
         };
         Box::pin(fut)
-
     }
-    
 }
-
-
-
 
 async fn get_user_id(access_token: &Cookie<'_>) -> Result<i32, CustomError> {
     let client = Client::new();

@@ -14,6 +14,11 @@ pub async fn get_articles_preview(
 ) -> Result<Json<Vec<ArticlePreview>>, CustomError> {
     let db_pool = &state.db_pool;
 
+    // fetch_all will give you a Vec of the rows and give you the ability to map over them
+    // fetch_one will give you a single row
+    // fetch will give you a stream of rows
+    // fetch_optional will give you an Option of a single row
+    // fetch_all will give back the connection to the pool
     let articles = sqlx::query!("SELECT id, title, date FROM ARTICLES")
         .fetch_all(db_pool)
         .await?

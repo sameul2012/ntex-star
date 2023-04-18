@@ -12,13 +12,23 @@ use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 
 use std::{env, sync::Arc};
 
+// use std::panic;
+
 #[derive(Debug, Clone)]
 pub struct AppState {
     pub db_pool: Pool<Postgres>,
 }
 
+
+
 #[ntex::main]
 async fn main() {
+
+    // panic::set_hook(Box::new(|panic_info| {
+    //     let payload = panic_info.payload().downcast_ref::<&str>().unwrap();
+    //     println!("panic: {}", payload);
+    // }));
+
     dotenvy::dotenv().ok();
 
     env::set_var("RUST_LOG", "ntex=info");
