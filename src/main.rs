@@ -19,11 +19,13 @@ pub struct AppState {
     pub db_pool: Pool<Postgres>,
 }
 
-
+// async fn accept_connection(stream: tokio::net::TcpStream) {
+//     println!("accepting socket; addr={:?}", stream.peer_addr().unwrap());
+//     // ...
+// }
 
 #[ntex::main]
 async fn main() {
-
     // panic::set_hook(Box::new(|panic_info| {
     //     let payload = panic_info.payload().downcast_ref::<&str>().unwrap();
     //     println!("panic: {}", payload);

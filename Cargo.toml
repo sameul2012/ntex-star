@@ -22,3 +22,8 @@ sqlx = { version = "0.6.2", features = [
     "macros",
     "chrono",
 ] }
+
+# tokio = { version = "1.11.0", features = ["full"] }
+# tungstenite = "0.13.0"
+# tokio-tungstenite = "0.14.0"
+# futures-util = "0.3.0"

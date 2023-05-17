@@ -1,0 +1,8 @@
+# # rustfmt configuration
+# version = "2"
+
+edition = "2021"
+version = "Two"
+
+# set indentation to 2 spaces
+tab_spaces=2
